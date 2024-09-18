@@ -60,23 +60,39 @@ public class GameOfLife {
     }
 
     private static Set<Cell> getNextGenerationForAllCell(Set<Cell> aliveCell) {
+        //I am taking this for resultant alive cell after the iteration of each cell
         Set<Cell> newAliveCell = new HashSet<>();
+
+        //This is set of all alive cell as well as all it's neighbours
         Set<Cell> aliveCellIncludingItsAllNeighbour = new HashSet<>();
 
+        //here we are finding all neighbours of aliveCell and added
+        // to the aliveCellIncludingItsAllNeighbour set
         for(Cell cell: aliveCell){
             aliveCellIncludingItsAllNeighbour.add(cell);
             aliveCellIncludingItsAllNeighbour.addAll(getNetCurrentCellNeibhour(cell));
         }
 
-        for(Cell cell:aliveCellIncludingItsAllNeighbour){
-            Set<Cell> neibhors = getNetCurrentCellNeibhour(cell);
 
+        //Now Actual logic start
+        for(Cell cell:aliveCellIncludingItsAllNeighbour){
+
+            //for each cell whether it is alive or dead
+            // we need to iterate and perform rules operations
+            Set<Cell> neighbours = getNetCurrentCellNeibhour(cell);
+
+            //calculating all alive neighbours
             int countOfAliveNebhor=0;
-            for (Cell neibhor : neibhors){
-                if(aliveCell.contains(neibhor)){
+            for (Cell neighbour : neighbours){
+                if(aliveCell.contains(neighbour)){
                     countOfAliveNebhor+=1;
                 }
             }
+
+            //I am focusing to find all alive cell after passing the rule of aliveness
+
+            //3. Any live cell with two or three live neighbours lives, unchanged, to the next generation.
+            //4. Any dead cell with exactly three live neighbours comes to life.
 
             if(aliveCell.contains(cell)){
                 if(countOfAliveNebhor==2 || countOfAliveNebhor==3){
@@ -90,15 +106,16 @@ public class GameOfLife {
 
         }
 
-
-
+        //simple return the resultant alive cell
         return newAliveCell;
     }
 
     private static Set<Cell> getNetCurrentCellNeibhour(Cell cell) {
 
         Set<Cell> allNeibhourCurrentCell = new HashSet<>();
-        //for each cell neibhour be like
+
+        //for each cell neighbours be like
+        //we have to add like x+nx , y+ny to find all 8 neighbours
 //        nx,ny: -1 , -1
 //        nx,ny: -1 , 0
 //        nx,ny: -1 , 1
